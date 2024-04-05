@@ -1,0 +1,48 @@
+stages:
+  - package
+  - trigger
+
+# 阶段: 产物打包
+package-job:
+  stage: package
+  tags:
+    - docker
+  variables:
+    GIT_DEPTH: "1"
+  artifacts:
+      paths:
+        - dist/*.tar.gz
+      expire_in: 5 minutes # 产物5分钟后就会被删除，防止缓存影响
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_COMMIT_MESSAGE =~ /产物构建/)'
+      when: manual
+    - when: never
+  script:
+    - |
+      if [ -z "$version" ]; then
+        export version=$(date +%Y%m%d)
+        echo "版本为空, 使用当期日期: $version"
+      else
+        echo "版本设置为: $version"
+      fi
+      sed -i 's/version="[0-9]*"/version="'$version'"/' setup.py
+    - cat setup.py
+    - python3 setup.py sdist
+
+# 阶段: 触发下游项目
+# trigger_subci_pipeline:
+#   stage: trigger
+#   trigger:
+#     project: oudezhinu/subci
+#     branch: main
+#   inherit:
+#     variables: false
+#   variables:
+#     UPBRANCH: $CI_COMMIT_BRANCH
+#   needs:
+#     - job: package-job
+#       artifacts: true
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_MESSAGE =~ /跨项目构建/'
+#       when: on_success
+#     - when: never
