@@ -6,7 +6,7 @@ stages:
 package-job:
   stage: package
   tags:
-    - docker
+    - oude
   variables:
     GIT_DEPTH: "1"
   artifacts:
@@ -15,7 +15,7 @@ package-job:
       expire_in: 5 minutes # 产物5分钟后就会被删除，防止缓存影响
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && ($CI_COMMIT_MESSAGE =~ /产物构建/)'
-      when: manual
+      when: success
     - when: never
   script:
     - |
