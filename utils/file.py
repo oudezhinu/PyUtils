@@ -7,7 +7,10 @@
 @版本        :1.0
 '''
 import os
+import yaml
 from loguru import logger as log
+from typing import Dict, Any
+
 def read_file_content(file_path, encoding='utf-8', file_exception=True):
     """
     读取文件内容 
@@ -35,3 +38,33 @@ def read_file_content(file_path, encoding='utf-8', file_exception=True):
     with open(file=file_path, mode='r', encoding=encoding) as file:
         file_content = file.read()
     return file_content
+
+def deep_update(source: Dict[Any, Any], updates: Dict[Any, Any]):
+    """递归地更新字典，保留嵌套字典的原始键"""
+    if not isinstance(source, dict):
+        # 如果 source 不是字典类型，则返回一个新的空字典
+        source = {}
+    for key, value in updates.items():
+        if isinstance(value, dict) and value:
+            # 如果更新的值是非空字典，递归更新
+            node = source.setdefault(key, {}) # 如果 key 不存在，则初始化为 {}
+            source[key] = deep_update(node, value) # 递归更新
+        else:
+            # 如果更新的值不是字典或者是空字典，则直接赋值
+            source[key] = value
+    return source
+
+def 更新yaml配置文件(config_file, update_data):
+
+    # 读取现有的YAML文件
+    with open(config_file, 'r') as file:
+        config_data = yaml.safe_load(file) or {}
+
+    # 使用深度更新,更新数据
+    deep_update(config_data, update_data)
+
+    # 将更新后的数据写回YAML文件
+    with open(config_file, 'w') as file:
+        yaml.dump(config_data, file, default_style=False)
+
+    log.info("yaml更新完毕")
