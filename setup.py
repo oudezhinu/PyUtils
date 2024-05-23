@@ -12,7 +12,7 @@ setup(
     name="PyUtils",
     version="20240405",
     packages=find_packages(exclude=["test"]),
-    url="http://karthrand.synology.me:8181/karthrand/pyutils.git",
+    url="http://nas.karthrand.cn:8181/karthrand/pyutils.git",
     author="Karthrand",
     include_package_data=True
 )
