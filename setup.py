@@ -10,9 +10,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyutils",
-    version="20240523",
+    version="20240524",
     packages=find_packages(exclude=["test"]),
     url="http://nas.karthrand.cn:8181/oudezhinu/pyutils.git",
     author="Karthrand",
-    include_package_data=True
+    include_package_data=True,
+    package_data={
+        'pyutils': ['files/*', 'utils/*']  # 包含 files 和 utils 目录下的所有文件
+    },
 )
