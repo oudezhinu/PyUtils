@@ -9,7 +9,7 @@ package-job:
     - oude
   variables:
     GIT_DEPTH: "1"
-    version: "20240525"
+    version: "20240526"
   artifacts:
       paths:
         - dist/*.tar.gz
