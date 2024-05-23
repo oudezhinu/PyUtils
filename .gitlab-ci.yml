@@ -29,7 +29,7 @@ package-job:
     - cat setup.py
     - python3 setup.py sdist
 
-# 阶段: 触发下游项目 
+# 阶段: 触发下游项目  
 # trigger_subci_pipeline:
 #   stage: trigger
 #   trigger:
