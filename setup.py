@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyutils",
-    version="20240525",
+    version="20240526",
     packages=find_packages(exclude=["test"]),
     url="http://nas.karthrand.cn:8181/oudezhinu/pyutils.git",
     author="Karthrand",
