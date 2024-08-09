@@ -6,7 +6,8 @@ import os
 import colorlog
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from pycases.Projects.minikube.variables_global import cur_path
+
+cur_path = os.getenviron().get('cur_path')
 
 log_colors_config = {
     # 终端输出日志颜色配置
